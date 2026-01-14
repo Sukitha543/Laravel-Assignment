@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 //Public Routes
 Route::get('/', function () {return view('welcome');});
 Route::get('/about', function () {return view('about');})->name('about');
-Route::get('/products', [App\Http\Controllers\Customer\ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('products.show');
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 
 
 
@@ -40,6 +40,10 @@ Route::middleware([
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
     Route::delete('/cart/{cartItem}', [App\Http\Controllers\CartController::class, 'destroy'])->name('cart.destroy');
+
+    Route::get('/favorites', [App\Http\Controllers\FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favorites/add/{product}', [App\Http\Controllers\FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/favorites/{favorite}', [App\Http\Controllers\FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
 });
 

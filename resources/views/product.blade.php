@@ -78,11 +78,11 @@
                         </svg>
                         View Cart
                     </a>
-                    <button class="p-3 text-gray-500 hover:text-gray-900 border border-transparent hover:border-gray-300 rounded-sm transition">
+                    <a href="{{ route('favorites.index') }}" class="p-3 text-gray-500 hover:text-gray-900 border border-transparent hover:border-gray-300 rounded-sm transition">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -170,11 +170,14 @@
                             <div class="group">
                                 <div class="bg-transparent mb-4 overflow-hidden relative">
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->brand }} {{ $product->model }}" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
-                                    <button class="absolute top-4 right-4 p-2 bg-white/80 rounded-full text-gray-500 hover:text-red-500 hover:bg-white transition opacity-0 group-hover:opacity-100">
-                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                        </svg>
-                                    </button>
+                                    <form action="{{ route('favorites.store', $product->id) }}" method="POST" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition">
+                                        @csrf
+                                        <button type="submit" class="p-2 bg-white/80 rounded-full text-gray-500 hover:text-red-500 hover:bg-white transition">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </div>
                                 <div class="text-center">
                                     <h3 class="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition">{{ $product->brand }} {{ $product->model }}</h3>
