@@ -10,6 +10,7 @@ Route::get('/products', [App\Http\Controllers\Customer\ProductController::class,
 Route::get('/products/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('products.show');
 
 
+
 //Auth Routes for users
 Route::middleware([
     'auth:sanctum',
@@ -34,19 +35,12 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:customer',
 ])->group(function () {
-    /*Route::get('/cart', function () {
-        return 'Cart Page';
-    })->name('cart.index');
+    
+    Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{cartItem}', [App\Http\Controllers\CartController::class, 'destroy'])->name('cart.destroy');
 
-    Route::post('/cart/{id}', function () {
-        return redirect()->back()->with('message', 'Added to cart');
-    })->name('cart.store');
-
-    Route::post('/wishlist/{id?}', function () {
-        return redirect()->back()->with('message', 'Added to wishlist');
-    })->name('wishlist.store');*/
 });
 
 //Auth Routes for admin
@@ -67,8 +61,6 @@ Route::middleware([
     Route::get('/admin/products/{product}/edit}',[App\Http\Controllers\Admin\ProductController::class,'edit'])->name('admin.products.edit');
     Route::put('/admin/products/{product}',[App\Http\Controllers\Admin\ProductController::class,'update'])->name('admin.products.update');
     Route::delete('/admin/products/{product}',[App\Http\Controllers\Admin\ProductController::class,'destroy'])->name('admin.products.destroy');
-
-
 
 });
 
