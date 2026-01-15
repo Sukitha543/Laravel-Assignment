@@ -11,10 +11,7 @@ class ProductController extends Controller
     // Display the products
     public function index()
     {
-        $products = Product::where('quantity', '>', 0)
-        ->latest()
-        ->paginate(9);
-        return view('product', compact('products'));
+        return view('product');
     }
 
     public function show(Product $product)
