@@ -22,6 +22,9 @@
                     <x-nav-link href="{{ route('admin.products.manage') }}" :active="request()->routeIs('admin.products.manage')">
                         {{ __('Manage Products') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.index')">
+                        {{ __('Manage Orders') }}
+                    </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -153,6 +156,11 @@
             <x-responsive-nav-link href="{{ route('admin.products.show') }}" :active="request()->routeIs('admin.products.show')">
                 {{ __('Add Products') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->role === 'admin')
+            <x-responsive-nav-link href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.index')">
+                {{ __('Manage Orders') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

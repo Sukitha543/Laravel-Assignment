@@ -6,9 +6,7 @@
 <body>
     <h1>Payment Successful!</h1>
     <p>Thank you for your purchase. Your order #{{ $order->id }} has been confirmed.</p>
-
     <h3>Order Summary</h3>
-    
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
@@ -33,13 +31,11 @@
             </tr>
         </tbody>
     </table>
-
     <p>
         <strong>Need more details about your order?</strong><br>
         Call to +94 11 2335787<br>
         Email to info@TimeBridge.lk
     </p>
-
     <p>&copy; {{ date('Y') }} TimeBridge Inc. All rights reserved.</p>
 </body>
 </html>
