@@ -12,11 +12,7 @@ use Illuminate\Http\Request;
     {
         public function index()
         {
-            $cartItems = CartItem::with('product')->where('user_id', Auth::id())->get();
-            $total = $cartItems->sum(function($item) {
-                return $item->product->price * $item->quantity;
-            });
-            return view('cart', compact('cartItems', 'total'));
+            return view('cart');
         }
 
         public function store(Request $request, Product $product)

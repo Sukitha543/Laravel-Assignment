@@ -116,7 +116,7 @@
                             <h3 class="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition">{{ $product->brand }} {{ $product->model }}</h3>
                             <div class="flex justify-center items-center gap-3 mt-1 mb-3">
                                 <span class="text-lg font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
-                                <a href="{{ route('products.show', $product) }}" class="text-xs text-gray-500 italic hover:underline">View Details</a>
+                                <a href="{{ route('products.show', $product->id) }}" class="text-xs text-gray-500 italic hover:underline">View Details</a>
                             </div>
                             <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                 @csrf

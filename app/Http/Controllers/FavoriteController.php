@@ -12,8 +12,7 @@ use Illuminate\Http\Request;
     {
         public function index()
         {
-            $favorites = Favorite::with('product')->where('user_id', Auth::id())->get();
-            return view('favorites', compact('favorites'));
+            return view('favorites');
         }
 
         public function store(Request $request, Product $product)
