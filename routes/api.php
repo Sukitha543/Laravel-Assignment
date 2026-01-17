@@ -2,47 +2,48 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\CheckoutController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Public API Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// Action Routes (Authentication required)
-Route::middleware([
-    'web',
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    
-    // Cart Actions
-    Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
-    Route::delete('/cart/{cartItem}', [App\Http\Controllers\CartController::class, 'destroy'])->name('cart.destroy');
+// Protected API Routes
+Route::middleware('auth:sanctum')->group(function () {
 
-    // Favorite Actions
-    Route::post('/favorites/add/{product}', [App\Http\Controllers\FavoriteController::class, 'store'])->name('favorites.store');
-    Route::delete('/favorites/{favorite}', [App\Http\Controllers\FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Checkout Action
-    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'checkout'])->name('checkout');
+    // Get Authenticated User
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-});
+    // Product Routes
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
 
-// Admin Action Routes
-Route::middleware([
-    'web',
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-    'role:admin'
-])->group(function () {
+    //Cart Routes
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add/{product}', [CartController::class, 'store']);
+    Route::delete('/cart/{cartItem}', [CartController::class, 'destroy']);
 
-    Route::post('/admin/products', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('admin.products.store'); 
-    Route::put('/admin/products/{product}',[App\Http\Controllers\Admin\ProductController::class,'update'])->name('admin.products.update');
-    Route::delete('/admin/products/{product}',[App\Http\Controllers\Admin\ProductController::class,'destroy'])->name('admin.products.destroy');
-    
-    // Order Actions
-    Route::patch('/admin/orders/{order}/accept', [App\Http\Controllers\Admin\OrderController::class, 'accept'])->name('admin.orders.accept');
-    Route::delete('/admin/orders/{order}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.orders.destroy');
+    // Favorite Routes
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites/add/{product}', [FavoriteController::class, 'store']);
+    Route::delete('/favorites/{favorite}', [FavoriteController::class, 'destroy']);
+
+    // Checkout Routes
+    Route::post('/checkout', [CheckoutController::class, 'checkout']);
+    Route::get('/checkout/success', [CheckoutController::class, 'success']);
+
 
 });
+
+
+
+
