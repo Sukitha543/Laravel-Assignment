@@ -10,9 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    <style>
-        body { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="bg-white text-gray-900 antialiased selection:bg-gray-900 selection:text-white flex flex-col min-h-screen">
 
