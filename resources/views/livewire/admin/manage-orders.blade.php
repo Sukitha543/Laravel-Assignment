@@ -2,26 +2,39 @@
     <div class="p-6 bg-white border-b border-gray-200">
         
         <!-- Filter Section -->
-        <div class="mb-6 flex flex-wrap gap-4 items-center p-4 bg-gray-50 rounded-lg">
-            <span class="font-semibold text-gray-700">Filter Orders:</span>
-            
-            <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" wire:model.live="filterAll" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <span class="ml-2 text-gray-600">All Orders</span>
-            </label>
+        <div class="mb-6 flex flex-wrap gap-4 items-center p-4 bg-gray-50 rounded-lg justify-between">
+            <div class="flex flex-wrap gap-4 items-center">
+                <span class="font-semibold text-gray-700">Filter Orders:</span>
+                
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" wire:model.live="filterAll" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-gray-600">All Orders</span>
+                </label>
 
-            <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" wire:model.live="filterAccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <span class="ml-2 text-gray-600">Accepted Orders</span>
-            </label>
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" wire:model.live="filterAccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-gray-600">Accepted Orders</span>
+                </label>
 
-            <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" wire:model.live="filterUnaccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <span class="ml-2 text-gray-600">Not Accepted Orders</span>
-            </label>
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" wire:model.live="filterUnaccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-gray-600">Not Accepted (Pending)</span>
+                </label>
 
-            {{-- Loading Indicator --}}
-            <span wire:loading class="ml-2 text-indigo-600 text-sm font-medium">Updating...</span>
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" wire:model.live="filterRejected" class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-gray-600">Rejected Orders</span>
+                </label>
+
+                {{-- Loading Indicator --}}
+                <span wire:loading class="ml-2 text-indigo-600 text-sm font-medium">Updating...</span>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="flex items-center">
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search by Order ID..." 
+                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-64">
+            </div>
         </div>
 
         <!-- Success Message -->
@@ -33,7 +46,7 @@
 
         <!-- Orders Table -->
         <div class="overflow-x-auto relative">
-            <div wire:loading.flex class="absolute inset-0 bg-white/50 z-10 justify-center items-start pt-10">
+            <div wire:loading.flex wire:target="filterAll, filterAccepted, filterUnaccepted, filterRejected, accept, reject, search" class="absolute inset-0 bg-white/50 z-10 justify-center items-start pt-10">
                 <svg class="w-8 h-8 animate-spin text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -76,6 +89,10 @@
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                         Accepted
                                     </span>
+                                @elseif($order->status === 'rejected')
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        Rejected
+                                    </span>
                                 @else
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                         {{ ucfirst($order->status) }}
@@ -84,23 +101,27 @@
                             </td>
                             <td class="px-4 py-3 align-top">
                                 <div class="flex gap-2">
-                                    @if($order->status !== 'accepted')
-                                        <form method="POST" action="{{ route('admin.orders.accept', $order->id) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-xs transition duration-150 ease-in-out">
-                                                Accept
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" onsubmit="return confirm('Are you sure you want to delete this order?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs transition duration-150 ease-in-out">
-                                            Delete
+                                    @if($order->status === 'paid' || $order->status === 'pending')
+                                        <button wire:click="accept({{ $order->id }})" 
+                                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-xs transition duration-150 ease-in-out">
+                                            Accept
                                         </button>
-                                    </form>
+
+                                        <button wire:click="reject({{ $order->id }})" 
+                                            wire:confirm="Are you sure you want to reject this order? Value of items will be added back to inventory."
+                                            class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs transition duration-150 ease-in-out">
+                                            Reject
+                                        </button>
+                                    @endif
+                                    
+                                    {{-- Optional: Allow rejection of accepted orders? Usually yes, but with caution --}}
+                                    @if($order->status === 'accepted')
+                                         <button wire:click="reject({{ $order->id }})" 
+                                            wire:confirm="Are you sure you want to reject this previously accepted order?"
+                                            class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs transition duration-150 ease-in-out">
+                                            Reject
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -114,6 +135,5 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
