@@ -25,7 +25,6 @@ class CheckoutController extends Controller
         }
 
         $lineItems = [];
-        $totalPrice = 0;
 
         foreach ($cartItems as $item) {
             if ($item->product->quantity < $item->quantity) {
@@ -42,25 +41,6 @@ class CheckoutController extends Controller
                 ],
                 'quantity' => $item->quantity,
             ];
-
-            $totalPrice += $item->product->price * $item->quantity;
-        }
-
-        // Create Order (Pending)
-        $order = Order::create([
-            'user_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => $totalPrice,
-            'session_id' => null, // will update later
-        ]);
-
-        foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-            ]);
         }
 
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -72,15 +52,12 @@ class CheckoutController extends Controller
             'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.cancel'),
             'metadata' => [
-                'order_id' => $order->id,
+                'user_id' => $user->id,
             ],
-            // Collect shipping address if needed
             'shipping_address_collection' => [
-                'allowed_countries' => ['US', 'CA', 'GB', 'LK'], // Add relevant countries
+                'allowed_countries' => ['US', 'CA', 'GB', 'LK'], 
             ],
         ]);
-
-        $order->update(['session_id' => $session->id]);
 
         return redirect($session->url);
     }
@@ -101,32 +78,57 @@ class CheckoutController extends Controller
             if (!$session) {
                 return redirect()->route('cart.index')->with('error', 'Invalid session.');
             }
-            
-            // Should be using metadata, but session_id search is safe too
-            $order = Order::where('session_id', $sessionId)->first();
 
-            if (!$order) {
-                 return redirect()->route('cart.index')->with('error', 'Order not found.');
+            // Check if order already exists to prevent duplicate creation on refresh
+            $existingOrder = Order::where('session_id', $sessionId)->first();
+            if ($existingOrder) {
+                 return view('checkout.success', compact('existingOrder'));
             }
 
-            if ($order->status === 'pending') {
-                $order->update(['status' => 'paid']);
+            $user = Auth::user();
+            
+            // Re-fetch cart items
+            $cartItems = CartItem::where('user_id', $user->id)->with('product')->get();
+            
+            if ($cartItems->isEmpty()) {
+                 // Fallback or error if cart is somehow empty (e.g. cleared in another tab)
+                 // Or we could rely on session amount?
+                 // For now, assume cart is still valid.
+                 return redirect()->route('cart.index')->with('error', 'Cart is empty. Was the order already processed?');
+            }
+            
+            $totalPrice = $session->amount_total / 100;
+
+            // Create Order (Pending by default as requested)
+            $order = Order::create([
+                'user_id' => $user->id,
+                'status' => 'pending', 
+                'total_price' => $totalPrice,
+                'session_id' => $session->id,
+            ]);
+
+            foreach ($cartItems as $item) {
+                // Check stock again or just proceed? Assuming paid means proceeded.
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                ]);
 
                 // Reduce stock
-                foreach ($order->items as $item) {
-                    $product = Product::find($item->product_id);
-                    if ($product) {
-                        $product->quantity -= $item->quantity;
-                        $product->save();
-                    }
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->quantity -= $item->quantity;
+                    $product->save();
                 }
-
-                // Clear Cart
-                CartItem::where('user_id', $order->user_id)->delete();
-
-                // Send Email
-                Mail::to($order->user)->send(new OrderPaid($order));
             }
+
+            // Clear Cart
+            CartItem::where('user_id', $user->id)->delete();
+
+            // Send Email
+            Mail::to($user)->send(new OrderPaid($order));
 
             return view('checkout.success', compact('order'));
 
