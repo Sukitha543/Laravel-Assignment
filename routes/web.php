@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,3 +77,8 @@ Route::middleware([
 
 });
 
+Route::get('/railway-init', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    Artisan::call('storage:link');
+    return 'DONE';
+});
