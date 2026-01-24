@@ -2,28 +2,28 @@
     <div class="p-6 bg-white border-b border-gray-200">
         
         <!-- Filter Section -->
-        <div class="mb-6 flex flex-wrap gap-4 items-center p-4 bg-gray-50 rounded-lg justify-between">
-            <div class="flex flex-wrap gap-4 items-center">
-                <span class="font-semibold text-gray-700">Filter Orders:</span>
+        <div class="mb-6 flex flex-col md:flex-row gap-4 items-center p-4 bg-gray-50 rounded-lg justify-between shadow-sm">
+            <div class="flex flex-wrap gap-4 items-center w-full md:w-auto">
+                <span class="font-semibold text-gray-700">Filter:</span>
                 
-                <label class="inline-flex items-center cursor-pointer">
+                <label class="inline-flex items-center cursor-pointer hover:bg-gray-200 p-2 rounded transition">
                     <input type="checkbox" wire:model.live="filterAll" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <span class="ml-2 text-gray-600">All Orders</span>
+                    <span class="ml-2 text-gray-600 font-medium text-sm">All</span>
                 </label>
 
-                <label class="inline-flex items-center cursor-pointer">
+                <label class="inline-flex items-center cursor-pointer hover:bg-green-100 p-2 rounded transition">
                     <input type="checkbox" wire:model.live="filterAccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <span class="ml-2 text-gray-600">Accepted Orders</span>
+                    <span class="ml-2 text-gray-600 font-medium text-sm">Accepted</span>
                 </label>
 
-                <label class="inline-flex items-center cursor-pointer">
+                <label class="inline-flex items-center cursor-pointer hover:bg-yellow-100 p-2 rounded transition">
                     <input type="checkbox" wire:model.live="filterUnaccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <span class="ml-2 text-gray-600">Not Accepted (Pending)</span>
+                    <span class="ml-2 text-gray-600 font-medium text-sm">Pending</span>
                 </label>
 
-                <label class="inline-flex items-center cursor-pointer">
+                <label class="inline-flex items-center cursor-pointer hover:bg-red-100 p-2 rounded transition">
                     <input type="checkbox" wire:model.live="filterRejected" class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50">
-                    <span class="ml-2 text-gray-600">Rejected Orders</span>
+                    <span class="ml-2 text-gray-600 font-medium text-sm">Rejected</span>
                 </label>
 
                 {{-- Loading Indicator --}}
@@ -31,9 +31,9 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="flex items-center">
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search by Order ID..." 
-                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-64">
+            <div class="w-full md:w-auto">
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search Order ID..." 
+                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full md:w-80">
             </div>
         </div>
 
