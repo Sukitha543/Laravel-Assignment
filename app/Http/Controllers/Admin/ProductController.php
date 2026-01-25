@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage; 
 use Illuminate\Http\Request;
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductController extends Controller
 { 
@@ -36,8 +36,8 @@ class ProductController extends Controller
 
         //Image Upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
+            $result = Cloudinary::uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'products']);
+            $validated['image'] = $result['secure_url'];
         }
 
         //Save Product
@@ -81,9 +81,13 @@ class ProductController extends Controller
     ]);
 
     // Image update (optional)
+    // Image update (optional)
     if ($request->hasFile('image')) {
-        Storage::disk('public')->delete($product->image);
-        $validated['image'] = $request->file('image')->store('products', 'public');
+        if (!filter_var($product->image, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($product->image);
+        }
+        $result = Cloudinary::uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'products']);
+        $validated['image'] = $result['secure_url'];
     }
 
     $product->update($validated);
@@ -96,7 +100,9 @@ class ProductController extends Controller
     //Delete the Product
     public function destroy(Product $product)
     {
-        Storage::disk('public')->delete($product->image);
+        if (!filter_var($product->image, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($product->image);
+        }
         $product->delete();
 
         return redirect()

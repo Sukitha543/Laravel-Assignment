@@ -130,7 +130,7 @@
                 <!-- Current Image -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Current Image</label>
-                    <img src="{{ asset('storage/' . $product->image) }}"
+                    <img src="{{ $product->image_url }}"
                          class="h-32 mt-2 rounded shadow">
                 </div>
 

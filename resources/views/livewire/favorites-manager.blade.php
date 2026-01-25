@@ -31,7 +31,7 @@
         <div class="p-6 flex items-center justify-between border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition">
             <div class="flex items-center gap-6">
                     <div class="w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                    <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->brand }}" class="w-full h-full object-cover">
+                    <img src="{{ $item->product->image_url }}" alt="{{ $item->product->brand }}" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="font-medium text-lg text-gray-900">{{ $item->product->brand }} {{ $item->product->model }}</h3>

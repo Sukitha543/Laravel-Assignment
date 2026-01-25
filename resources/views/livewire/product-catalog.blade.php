@@ -102,7 +102,7 @@
                     @forelse ($products as $product)
                     <div class="group">
                         <div class="bg-transparent mb-4 overflow-hidden relative">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->brand }} {{ $product->model }}" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->brand }} {{ $product->model }}" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
                             <form action="{{ route('favorites.store', $product->id) }}" method="POST" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition">
                                 @csrf
                                 <button type="submit" class="p-2 bg-white/80 rounded-full text-gray-500 hover:text-red-500 hover:bg-white transition">

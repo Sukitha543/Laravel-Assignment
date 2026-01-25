@@ -66,7 +66,7 @@
 
             <!-- Left: Image Section -->
             <div class="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 md:p-12">
-                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->brand }} {{ $product->model }}" class="w-full h-auto max-h-[500px] object-contain drop-shadow-xl transform hover:scale-105 transition duration-500">
+                 <img src="{{ $product->image_url }}" alt="{{ $product->brand }} {{ $product->model }}" class="w-full h-auto max-h-[500px] object-contain drop-shadow-xl transform hover:scale-105 transition duration-500">
             </div>
 
             <!-- Right: Details Section -->

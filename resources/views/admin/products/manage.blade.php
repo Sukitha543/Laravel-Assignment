@@ -26,7 +26,7 @@
                 @foreach($products as $product)
                     <tr class="border-t">
                         <td class="p-3">
-                            <img src="{{ asset('storage/' . $product->image) }}"
+                            <img src="{{ $product->image_url }}"
                                  class="h-16 rounded">
                         </td>
                         <td class="p-3">{{ $product->brand }}</td>
