@@ -44,7 +44,8 @@ Route::middleware([
     Route::post('/favorites/add/{product}', [App\Http\Controllers\FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{favorite}', [App\Http\Controllers\FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
-    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/cancel', [App\Http\Controllers\CheckoutController::class, 'cancel'])->name('checkout.cancel');
     

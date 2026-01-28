@@ -34,17 +34,76 @@ class CheckoutController extends Controller
         $lineItems = [];
         $totalPrice = 0;
 
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'city' => 'required|string',
+        ]);
+        
+        // Create Order and Reserve Stock
+        try {
+            $order = \Illuminate\Support\Facades\DB::transaction(function () use ($user, $cartItems, $request) {
+                
+                $totalPrice = 0;
+                
+                // 1. Calculate Total & Reserve Stock
+                foreach ($cartItems as $item) {
+                     $product = Product::lockForUpdate()->find($item->product_id);
+                     
+                     if (!$product || $product->quantity < $item->quantity) {
+                         throw new \Exception('Product ' . $item->product->brand . ' ' . $item->product->model . ' is out of stock.');
+                     }
+                     
+                     // Reserve Stock (Reduce now)
+                     $product->quantity -= $item->quantity;
+                     $product->save();
+
+                     $totalPrice += $item->product->price * $item->quantity;
+                }
+
+                // 2. Create Order (Pending)
+                $order = Order::create([
+                    'user_id' => $user->id,
+                    'status' => 'pending', 
+                    'total_price' => $totalPrice,
+                    'session_id' => null, 
+                ]);
+
+                // 3. Create Order Items
+                foreach ($cartItems as $item) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'price' => $item->product->price,
+                    ]);
+                }
+
+                // 4. Create Shipping Details
+                $order->shippingDetail()->create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'city' => $request->city,
+                ]);
+
+                return $order;
+            });
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+
+        // Prepare Line Items for Stripe
+        $lineItems = [];
         foreach ($cartItems as $item) {
-
-            if ($item->product->quantity < $item->quantity) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Product out of stock: ' .
-                        $item->product->brand . ' ' . $item->product->model
-                ], 400);
-            }
-
-            $lineItems[] = [
+             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
@@ -54,45 +113,21 @@ class CheckoutController extends Controller
                 ],
                 'quantity' => $item->quantity,
             ];
-
-            $totalPrice += $item->product->price * $item->quantity;
         }
 
-        // Create Order (Pending)
-        $order = Order::create([
-            'user_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => $totalPrice,
-            'session_id' => null,
-        ]);
-
-        // Create Order Items
-        foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-            ]);
-        }
-
-        // Stripe Checkout Session
+        // Stripe Session
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-
-            // IMPORTANT: frontend URLs (Flutter handles these)
             'success_url' => config('app.frontend_url') . '/payment-success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => config('app.frontend_url') . '/payment-cancel',
-
+            'cancel_url' => config('app.frontend_url') . '/payment-cancel?order_id=' . $order->id,
             'metadata' => [
                 'order_id' => $order->id,
+                'user_id' => $user->id,
             ],
-
-
         ]);
 
         $order->update(['session_id' => $session->id]);
@@ -133,15 +168,6 @@ class CheckoutController extends Controller
             if ($order->status === 'pending') {
                 $order->update(['status' => 'paid']);
 
-                // Reduce stock
-                foreach ($order->items as $item) {
-                    $product = Product::find($item->product_id);
-                    if ($product) {
-                        $product->quantity -= $item->quantity;
-                        $product->save();
-                    }
-                }
-
                 // Clear cart
                 CartItem::where('user_id', $order->user_id)->delete();
 
@@ -161,6 +187,46 @@ class CheckoutController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    // GET /api/checkout/cancel
+    public function cancel(Request $request)
+    {
+        $orderId = $request->query('order_id');
+
+        if (! $orderId) {
+             return response()->json([
+                'success' => false,
+                'message' => 'Order ID is required'
+            ], 400);
+        }
+
+        $order = Order::where('id', $orderId)
+                        ->where('user_id', $request->user()->id) // Security check
+                        ->where('status', 'pending')
+                        ->first();
+
+        if ($order) {
+            // Restore Stock
+            foreach ($order->items as $item) {
+                 $product = Product::find($item->product_id);
+                 if ($product) {
+                     $product->quantity += $item->quantity;
+                     $product->save();
+                 }
+            }
+
+            $order->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Order cancelled successfully'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found or cannot be cancelled'
+        ], 404);
     }
 }
 

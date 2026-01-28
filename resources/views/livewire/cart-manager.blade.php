@@ -69,12 +69,9 @@
                     <span class="text-2xl font-bold text-gray-900">${{ number_format($total, 2) }}</span>
                 </div>
 
-                <form action="{{ route('checkout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-md transition mb-4 shadow-sm">
-                        Proceed to Checkout
-                    </button>
-                </form>
+                <a href="{{ route('checkout.index') }}" class="block w-full text-center bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-md transition mb-4 shadow-sm">
+                    Proceed to Checkout
+                </a>
                 
                 <div class="text-center">
                     <a href="{{ route('products.index') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition">Continue Shopping</a>

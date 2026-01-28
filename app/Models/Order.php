@@ -22,4 +22,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function shippingDetail()
+    {
+        return $this->hasOne(OrderShippingDetail::class);
+    }
 }
