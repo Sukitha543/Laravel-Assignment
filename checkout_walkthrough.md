@@ -66,7 +66,7 @@ Implement 3 methods:
         - Update **Order** status to `paid` (or `completed`).
         - **Reduce Stock**: Loop through order items and decrement product quantity.
         - **Clear Cart**: Remove user's cart items.
-        - **Send Email**: Dispatch `OrderPaid` mailable.
+
         - Return view `checkout.success`.
 
 3.  **`cancel()`**:
@@ -87,41 +87,14 @@ Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('che
 - **`checkout/success.blade.php`**: Success message.
 - **`checkout/cancel.blade.php`**: Error/Cancel message.
 
-## 5. Email Notification
-- Create Mailable: `php artisan make:mail OrderPaid`
-- Create View: `resources/views/emails/orders/paid.blade.php`
-- In `OrderPaid` mailable, accept `Order` model and pass to view.
+
 
 ## 6. Execution Steps
 1. Create Database Tables.
 2. Define Routes.
 3. Implement Controller Logic.
 4. Create Views.
-5. Create Mailable.
+
 6. Test.
 
-## 7. Email Configuration (Troubleshooting)
-If you are not receiving emails, it is likely because the `MAIL_MAILER` in your `.env` file is set to `log`.
 
-### Check Logs
-You can verify the system is generating emails by checking `storage/logs/laravel.log`. Search for "Order Confirmation".
-
-### Setup Gmail SMTP (For Testing)
-To send real emails using Gmail:
-1. Go to your Google Account > Security > 2-Step Verification > App passwords.
-2. Create an App Password for "Mail" / "Mac".
-3. Update your `.env` file:
-```env
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=your_gmail@gmail.com
-MAIL_PASSWORD=your_app_password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=your_gmail@gmail.com
-MAIL_FROM_NAME="${APP_NAME}"
-```
-### Setup Mailtrap (Recommended for Dev)
-1. Sign up at [Mailtrap.io](https://mailtrap.io).
-2. Copy the credentials from the "Integrations" -> "Laravel" section.
-3. Paste them into `.env`.

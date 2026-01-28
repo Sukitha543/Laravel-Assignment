@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Mail\OrderPaid;
+
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
@@ -128,7 +128,7 @@ class CheckoutController extends Controller
             CartItem::where('user_id', $user->id)->delete();
 
             // Send Email
-            Mail::to($user)->send(new OrderPaid($order));
+
 
             return view('checkout.success', compact('order'));
 
