@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Checkout Routes
     Route::post('/checkout', [CheckoutController::class, 'checkout']);
     Route::get('/checkout/success', [CheckoutController::class, 'success']);
+    Route::get('/checkout/cancel', [CheckoutController::class, 'cancel']);
 
 
 });
