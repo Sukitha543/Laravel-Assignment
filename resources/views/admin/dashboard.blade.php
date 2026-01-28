@@ -18,8 +18,8 @@
                         </svg>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-500">Total Customers</p>
-                        <p class="text-lg font-semibold text-gray-900">{{ $totalCustomers }}</p>
+                        <p class="text-sm font-medium text-blue-900">Total Customers</p>
+                        <p class="text-lg font-semibold text-blue-900">{{ $totalCustomers }}</p>
                     </div>
                 </div>
             </div>
