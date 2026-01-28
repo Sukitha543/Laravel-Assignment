@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('app:cleanup-pending-orders')->eachMinute();
+Schedule::command('app:cleanup-pending-orders')->everyMinute();
