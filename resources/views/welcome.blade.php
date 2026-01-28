@@ -73,8 +73,8 @@
                         </a>
                     @else
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="{{ route('login') }}" class="inline-block bg-black text-white px-8 py-4 rounded-none font-medium text-lg hover:bg-gray-800 transition transform hover:-translate-y-0.5 text-center">
-                                Login to Browse Our Products
+                            <a href="{{ route('login') }}" class="inline-flex items-center justify-center bg-black text-white px-8 py-3 rounded-none font-medium text-lg hover:bg-gray-800 transition transform hover:-translate-y-0.5">
+                            Browse Collection
                             </a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}" class="inline-block bg-transparent border-2 border-black text-black px-8 py-4 rounded-none font-medium text-lg hover:bg-black hover:text-white transition transform hover:-translate-y-0.5 text-center">
