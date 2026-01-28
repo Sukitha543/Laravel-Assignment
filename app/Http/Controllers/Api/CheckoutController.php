@@ -92,9 +92,7 @@ class CheckoutController extends Controller
                 'order_id' => $order->id,
             ],
 
-            'shipping_address_collection' => [
-                'allowed_countries' => ['US', 'CA', 'GB', 'LK'],
-            ],
+
         ]);
 
         $order->update(['session_id' => $session->id]);

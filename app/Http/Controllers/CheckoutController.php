@@ -54,9 +54,7 @@ class CheckoutController extends Controller
             'metadata' => [
                 'user_id' => $user->id,
             ],
-            'shipping_address_collection' => [
-                'allowed_countries' => ['US', 'CA', 'GB', 'LK'], 
-            ],
+
         ]);
 
         return redirect($session->url);
