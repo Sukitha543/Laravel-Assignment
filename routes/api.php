@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\CheckoutController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+
 // Protected API Routes
 Route::middleware('auth:sanctum')->group(function () {
 

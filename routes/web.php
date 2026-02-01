@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 //Public Routes
 Route::get('/', function () {return view('welcome');});
@@ -74,6 +75,18 @@ Route::middleware([
     Route::patch('/admin/orders/{order}/accept', [App\Http\Controllers\Admin\OrderController::class, 'accept'])->name('admin.orders.accept');
     Route::delete('/admin/orders/{order}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.orders.destroy');
 
-
+    
 });
+
+/*Route::get('/vunl-product-sql', function (\Illuminate\Http\Request $request) {
+    $model = $request->input('model');
+    $products = DB::select("SELECT * FROM products WHERE model = '$model'");
+    return response()->json($products);
+});
+
+Route::get('/vunl-cart-sql', function (\Illuminate\Http\Request $request) {
+    $quantity = $request->input('qty');
+    $cartItems = DB::select("SELECT * FROM cart_items WHERE quantity = $quantity");
+    return response()->json($cartItems);
+});*/
 

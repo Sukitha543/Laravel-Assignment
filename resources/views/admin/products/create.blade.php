@@ -26,30 +26,30 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Brand</label>
                     <select name="brand" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        <option>Select Brand</option>
-                        <option>Rolex</option>
-                        <option>Omega</option>
-                        <option>Patek Philippe</option>
-                        <option>Audemars Piguet</option>
+                        <option value="">Select Brand</option>
+                        <option value="Rolex" {{ old('brand') == 'Rolex' ? 'selected' : '' }}>Rolex</option>
+                        <option value="Omega" {{ old('brand') == 'Omega' ? 'selected' : '' }}>Omega</option>
+                        <option value="Patek Philippe" {{ old('brand') == 'Patek Philippe' ? 'selected' : '' }}>Patek Philippe</option>
+                        <option value="Audemars Piguet" {{ old('brand') == 'Audemars Piguet' ? 'selected' : '' }}>Audemars Piguet</option>
                     </select>
                 </div>
 
                 <!-- Model -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Model</label>
-                    <input type="text" name="model" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="model" value="{{ old('model') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Product Code -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Product Code</label>
-                    <input type="text" name="product_code" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="product_code" value="{{ old('product_code') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Diameter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Diameter</label>
-                    <input type="text" name="diameter" placeholder="e.g. 42mm"
+                    <input type="text" name="diameter" value="{{ old('diameter') }}" placeholder="e.g. 42mm"
                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
@@ -57,9 +57,9 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Type</label>
                     <select name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        <option>Select Type</option>
-                        <option value="men">Men</option>
-                        <option value="women">Women</option>
+                        <option value="">Select Type</option>
+                        <option value="men" {{ old('type') == 'men' ? 'selected' : '' }}>Men</option>
+                        <option value="women" {{ old('type') == 'women' ? 'selected' : '' }}>Women</option>
                     </select>
                 </div>
 
@@ -67,9 +67,9 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Material</label>
                     <select name="material" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        <option>Select Material</option>
-                        <option value="steel">Steel</option>
-                        <option value="plastic">Plastic</option>
+                        <option value="">Select Material</option>
+                        <option value="steel" {{ old('material') == 'steel' ? 'selected' : '' }}>Steel</option>
+                        <option value="plastic" {{ old('material') == 'plastic' ? 'selected' : '' }}>Plastic</option>
                     </select>
                 </div>
 
@@ -77,35 +77,35 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Strap</label>
                     <select name="strap" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        <option>Select Strap</option>
-                        <option value="leather">Leather</option>
-                        <option value="steel">Steel</option>
+                        <option value="">Select Strap</option>
+                        <option value="leather" {{ old('strap') == 'leather' ? 'selected' : '' }}>Leather</option>
+                        <option value="steel" {{ old('strap') == 'steel' ? 'selected' : '' }}>Steel</option>
                     </select>
                 </div>
 
                 <!-- Water Resistance -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Water Resistance</label>
-                    <input type="text" name="water_resistance" placeholder="e.g. 100m"
+                    <input type="text" name="water_resistance" value="{{ old('water_resistance') }}" placeholder="e.g. 100m"
                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Caliber -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Caliber</label>
-                    <input type="text" name="caliber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="caliber" value="{{ old('caliber') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Price -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Price</label>
-                    <input type="number" name="price" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="number" name="price" value="{{ old('price') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Quantity -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                    <input type="number" name="quantity" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="number" name="quantity" value="{{ old('quantity') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Image Upload -->

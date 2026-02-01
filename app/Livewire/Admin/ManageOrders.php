@@ -83,18 +83,20 @@ class ManageOrders extends Component
              $query->where('id', 'like', '%' . $this->search . '%');
         }
 
+        // Base restriction: Only show Paid, Accepted, or Rejected. (Hide 'pending' which means unpaid)
+        $query->whereIn('status', ['paid', 'accepted', 'rejected']);
+
         if (!$this->filterAll) {
             $statuses = [];
             if ($this->filterAccepted) $statuses[] = 'accepted';
-            if ($this->filterUnaccepted) {
-                // $statuses[] = 'paid'; // User requested to remove 'paid' from unaccepted logic
-                $statuses[] = 'pending';
-            }
+            if ($this->filterUnaccepted) $statuses[] = 'paid'; // 'Pending' in UI means 'Paid' status in DB
             if ($this->filterRejected) $statuses[] = 'rejected';
             
             if (!empty($statuses)) {
                 $query->whereIn('status', $statuses);
             }
+        } else {
+             // If All is selected, we already have the whereIn above restricting to valid statuses
         }
 
         return view('livewire.admin.manage-orders', [

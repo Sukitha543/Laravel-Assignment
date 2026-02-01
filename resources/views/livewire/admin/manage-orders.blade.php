@@ -16,9 +16,9 @@
                     <span class="ml-2 text-gray-600 font-medium text-sm">Accepted</span>
                 </label>
 
-                <label class="inline-flex items-center cursor-pointer hover:bg-yellow-100 p-2 rounded transition">
-                    <input type="checkbox" wire:model.live="filterUnaccepted" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <span class="ml-2 text-gray-600 font-medium text-sm">Pending</span>
+                <label class="inline-flex items-center cursor-pointer hover:bg-blue-100 p-2 rounded transition">
+                    <input type="checkbox" wire:model.live="filterUnaccepted" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-gray-600 font-medium text-sm">Paid</span>
                 </label>
 
                 <label class="inline-flex items-center cursor-pointer hover:bg-red-100 p-2 rounded transition">
@@ -59,6 +59,8 @@
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Order ID</th>
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Name</th>
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Email</th>
+                        <th class="px-4 py-2 text-left text-gray-600 font-bold">Contact Number</th>
+                        <th class="px-4 py-2 text-left text-gray-600 font-bold">Address</th>
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Ordered Products</th>
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Total Cost</th>
                         <th class="px-4 py-2 text-left text-gray-600 font-bold">Status</th>
@@ -69,17 +71,40 @@
                     @forelse($orders as $order)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="px-4 py-3 align-top">{{ $order->id }}</td>
-                            <td class="px-4 py-3 align-top">{{ $order->user->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-3 align-top">{{ $order->user->email ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 align-top">{{ $order->shippingDetail->name ?? ($order->user->name ?? 'N/A') }}</td>
+                            <td class="px-4 py-3 align-top">{{ $order->shippingDetail->email ?? ($order->user->email ?? 'N/A') }}</td>
+                            <td class="px-4 py-3 align-top">{{ $order->shippingDetail->phone ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 align-top text-sm">
+                                @if($order->shippingDetail)
+                                    <div>{{ $order->shippingDetail->address }}</div>
+                                    <div class="text-gray-500">{{ $order->shippingDetail->city }}</div>
+                                @else
+                                    <span class="text-gray-400 italic">N/A</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3 align-top">
-                                <ul class="list-disc list-inside text-sm text-gray-600">
+                                <div class="space-y-3">
                                     @foreach($order->items as $item)
-                                        <li>
-                                            {{ $item->product->brand ?? 'Unknown' }} {{ $item->product->model ?? 'Product' }}
-                                            (x{{ $item->quantity }})
-                                        </li>
+                                        <div class="flex items-center gap-3">
+                                            @if($item->product && $item->product->image_url)
+                                                <img src="{{ $item->product->image_url }}" alt="Product Image" class="w-12 h-12 object-cover rounded border border-gray-200">
+                                            @else
+                                                <div class="w-12 h-12 bg-gray-100 rounded border border-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                                                    N/A
+                                                </div>
+                                            @endif
+                                            
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $item->product->brand ?? 'Unknown' }} {{ $item->product->model ?? 'Product' }}
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    Qty: {{ $item->quantity }} &times; ${{ number_format($item->price, 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
-                                </ul>
+                                </div>
                             </td>
                             <td class="px-4 py-3 align-top font-semibold">
                                 ${{ number_format($order->total_price, 2) }}
@@ -127,7 +152,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                            <td colspan="9" class="px-4 py-6 text-center text-gray-500">
                                 No orders found matching your criteria.
                             </td>
                         </tr>

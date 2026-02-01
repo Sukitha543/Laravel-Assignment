@@ -20,7 +20,7 @@
     <body class="font-sans antialiased">
         <x-banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 flex flex-col">
             @livewire('navigation-menu')
 
             <!-- Page Heading -->
@@ -33,9 +33,16 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 {{ $slot }}
             </main>
+
+            <!-- Footer -->
+            <footer class="bg-white border-t border-gray-200 py-6 mt-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+                    &copy; {{ date('Y') }} TimeBridge. All rights reserved.
+                </div>
+            </footer>
         </div>
 
         @stack('modals')
