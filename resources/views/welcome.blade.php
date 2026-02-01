@@ -39,7 +39,7 @@
             <!-- Hero Image -->
             <div class="relative w-full h-full flex justify-end items-center z-20">
                   <div class="relative z-10 w-full flex justify-center lg:justify-end">
-                    <img src="{{ asset('images/watch.png') }}" alt="Luxury Watch" class="w-full max-w-[600px] object-contain drop-shadow-2xl">
+                    <img src="{{ asset('images/watch.jpg') }}" alt="Luxury Watch" class="w-full max-w-[600px] object-contain drop-shadow-2xl">
                   </div>
             </div>
         </div>

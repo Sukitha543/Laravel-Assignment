@@ -33,7 +33,7 @@
                 <!-- Image -->
                 <div class="relative w-full h-full min-h-[400px] lg:min-h-[500px]">
                     <div class="absolute inset-0 bg-gray-100 transform translate-x-4 translate-y-4 z-0"></div>
-                    <img src="{{ asset('images/about_us.png') }}" alt="Man viewing luxury watches" class="relative z-10 w-full h-full object-cover shadow-2xl">
+                    <img src="{{ asset('images/about_us.jpg') }}" alt="Man viewing luxury watches" class="relative z-10 w-full h-full object-cover shadow-2xl">
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
 
             <!-- Video/Story Placeholder Section (Visual Break) -->
             <div class="relative w-full h-80 rounded-sm overflow-hidden mb-24 bg-gray-900 flex items-center justify-center group cursor-pointer">
-                <img src="{{ asset('images/about_us.png') }}" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-30 transition blur-sm">
+                <img src="{{ asset('images/about_us.jpg') }}" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-30 transition blur-sm">
                  <div class="relative z-10 text-center text-white p-8">
                      <h2 class="text-3xl font-bold mb-4">Join the Inner Circle</h2>
                      <p class="text-gray-300 max-w-xl mx-auto mb-8">Sign up today to get exclusive access to our newest arrivals and members-only events.</p>
