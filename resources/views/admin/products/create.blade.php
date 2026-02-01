@@ -29,8 +29,8 @@
                         <option value="">Select Brand</option>
                         <option value="Rolex" {{ old('brand') == 'Rolex' ? 'selected' : '' }}>Rolex</option>
                         <option value="Omega" {{ old('brand') == 'Omega' ? 'selected' : '' }}>Omega</option>
-                        <option value="Patek Philippe" {{ old('brand') == 'Patek Philippe' ? 'selected' : '' }}>Patek Philippe</option>
-                        <option value="Audemars Piguet" {{ old('brand') == 'Audemars Piguet' ? 'selected' : '' }}>Audemars Piguet</option>
+                        <option value="Seiko" {{ old('brand') == 'Seiko' ? 'selected' : '' }}>Seiko</option>
+                        <option value="Casio" {{ old('brand') == 'Casio' ? 'selected' : '' }}>Casio</option>
                     </select>
                 </div>
 

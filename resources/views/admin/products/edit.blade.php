@@ -36,7 +36,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Brand</label>
                     <select name="brand" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        @foreach (['Rolex','Omega','Patek Philippe','Audemars Piguet'] as $brand)
+                        @foreach (['Rolex','Omega','Seiko','Casio'] as $brand)
                             <option value="{{ $brand }}" {{ $product->brand === $brand ? 'selected' : '' }}>
                                 {{ $brand }}
                             </option>

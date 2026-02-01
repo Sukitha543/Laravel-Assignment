@@ -52,7 +52,7 @@
                                 <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                                 <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" 
                                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-black focus:ring-black">
-                                !-- @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror -->
+                                @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Address -->
