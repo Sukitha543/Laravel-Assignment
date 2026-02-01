@@ -18,10 +18,10 @@
                         </h1>
                     </div>
                     <p class="text-lg text-gray-600 leading-relaxed max-w-lg">
-                        At TimeBridge, we believe a watch is more than a tool—it's a story, an heirloom, and a testament to precision. We connect discerning collectors with the world's most exquisite timepieces, ensuring authenticity and elegance in every second.
+                       At TimeBridge, we believe a watch is more than just a device to tell time — it tells a story, carries history, and shows true precision. We connect watch lovers with some of the world’s finest timepieces, ensuring authenticity, quality, and elegance in every piece.
                     </p>
                     <div class="pt-2 flex gap-4">
-                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center bg-black text-white px-8 py-3 rounded-none font-medium text-lg hover:bg-gray-800 transition transform hover:-translate-y-0.5">
+                        <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center bg-black text-white px-8 py-3 rounded-none font-medium text-lg hover:bg-gray-800 transition transform hover:-translate-y-0.5">
                             Browse Collection
                         </a>
                         <a href="#values" class="inline-flex items-center justify-center border border-gray-300 text-gray-700 px-8 py-3 rounded-none font-medium text-lg hover:border-black hover:text-black transition">
@@ -87,7 +87,7 @@
                 <img src="{{ asset('images/about_us.jpg') }}" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-30 transition blur-sm">
                  <div class="relative z-10 text-center text-white p-8">
                      <h2 class="text-3xl font-bold mb-4">Join the Inner Circle</h2>
-                     <p class="text-gray-300 max-w-xl mx-auto mb-8">Sign up today to get exclusive access to our newest arrivals and members-only events.</p>
+                     <p class="text-gray-300 max-w-xl mx-auto mb-8">Sign up today to get exclusive access to our newest arrivals.</p>
                      @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="inline-block bg-white text-black px-8 py-3 font-medium hover:bg-gray-100 transition">Create Account</a>
                      @endif
@@ -119,7 +119,7 @@
 
                     <!-- Hublot Placeholder -->
                     <div class="flex flex-col items-center gap-2 group cursor-pointer">
-                         <span class="text-3xl font-serif font-bold tracking-wider group-hover:text-black">HUBLOT</span>
+                         <span class="text-3xl font-serif font-bold tracking-wider group-hover:text-black">CASIO</span>
                     </div>
                 </div>
             </div>
