@@ -78,15 +78,5 @@ Route::middleware([
     
 });
 
-/*Route::get('/vunl-product-sql', function (\Illuminate\Http\Request $request) {
-    $model = $request->input('model');
-    $products = DB::select("SELECT * FROM products WHERE model = '$model'");
-    return response()->json($products);
-});
 
-Route::get('/vunl-cart-sql', function (\Illuminate\Http\Request $request) {
-    $quantity = $request->input('qty');
-    $cartItems = DB::select("SELECT * FROM cart_items WHERE quantity = $quantity");
-    return response()->json($cartItems);
-});*/
 
