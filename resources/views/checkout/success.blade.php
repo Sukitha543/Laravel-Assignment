@@ -19,10 +19,8 @@
                 <p class="text-lg text-gray-600 mb-6">Thank you for your purchase. Your payment has been processed successfully.</p>
                 
                 @if(isset($order))
-                <p class="text-gray-500 mb-8">Order ID: <span class="font-mono font-medium text-gray-900">#{{ $order->id }}</span></p>
+                <p class="text-gray-500 mb-8">Your Order ID: <span class="font-mono font-medium text-gray-900">#{{ $order->id }}</span></p>
                 @endif
-                
-                <p class="text-gray-500 mb-8">A receipt has been emailed to you.</p>
                 
                 <div class="mt-8">
                     <a href="{{ route('products.index') }}" class="inline-block bg-black text-white px-8 py-3 rounded-md font-medium hover:bg-gray-800 transition">
